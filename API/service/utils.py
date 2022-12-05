@@ -22,6 +22,7 @@ def crawler(url, class_name):
         texts = soup.find_all(['div', 'p', 'article'])
         for text in texts:
             body_list += text.get_text().strip()
+
     return body_list
 
 
@@ -37,6 +38,9 @@ def naver_crawler(word):
     with open(NAVER_FILE_PATH, 'w') as f:
         f.write(result)
     
+    img_path = wordcloud(NAVER_FILE_PATH, "naver")
+    return img_path
+    
 
 def google_crawler(word):
     """
@@ -49,12 +53,16 @@ def google_crawler(word):
 
     with open(GOOGLE_FILE_PATH, 'w') as f:
         f.write(result)
+    
+    img_path = wordcloud(GOOGLE_FILE_PATH, "google")
+    return img_path
 
 
 def wordcloud(text_path, img):
     """
     Create Wordcloud Image
     """
+
     text = open(text_path).read() 
     twitter = Twitter()
 
@@ -78,6 +86,8 @@ def wordcloud(text_path, img):
 
     url = f"{WORDCLOUD_IMG_PATH}{img}_{str(datetime.now().strftime('%y%m%d'))}.jpg"
     cloud.to_file(url)
+
+    return url
 
 
 if __name__ == '__main__':
